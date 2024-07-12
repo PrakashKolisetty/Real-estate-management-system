@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Query Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        #result {
+            display: none; /* Hide result initially */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Real Estate Query Assistant</h1>
+    <form id="queryForm" onsubmit="submitQuery(event)">
+        <label for="question">Ask a question:</label><br>
+        <textarea id="question" name="question" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+    <div class="result" id="result">
+        <h2>Query:</h2>
+        <p id="queryResult"></p>
+        <h2>Result:</h2>
+        <ul id="responseList">
+        </ul>
+    </div>
+</div>
+
+<script>
+    function submitQuery(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        // Get the question from the textarea
+        var question = document.getElementById("question").value;
+
+        // Send the question to the server using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/query", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Display the result
+                displayResult(JSON.parse(xhr.responseText));
+            }
+        };
+        xhr.send("question=" + question);
+    }
+
+    function displayResult(result) {
+        // Show the result container
+        document.getElementById("result").style.display = "block";
+
+        // Display the query
+        document.getElementById("queryResult").innerText = result.question;
+
+        // Display the response
+        var responseList = document.getElementById("responseList");
+        responseList.innerHTML = ""; // Clear previous responses
+        result.response.forEach(function (item) {
+            var li = document.createElement("li");
+            li.innerText = item;
+            responseList.appendChild(li);
+        });
+    }
+</script>
+</body>
+</html>

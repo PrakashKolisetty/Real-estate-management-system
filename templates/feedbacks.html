@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedbacks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .feedback-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .feedback-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .user-id {
+            font-weight: bold;
+            color: #007bff; /* Blue color */
+        }
+
+        .feedback-text {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .no-feedbacks {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedbacks</h1>
+        {% if feedbacks %}
+            {% for feedback in feedbacks %}
+            <div class="feedback-card">
+                <div class="feedback-header">
+                    <span>User ID: <span class="user-id">{{ feedback.user_id }}</span></span>
+                    <!-- Assuming 'user_id' is the field in your feedback documents -->
+                </div>
+                <p class="feedback-text">{{ feedback.feedback }}</p>
+                <!-- Assuming 'text' is the field in your feedback documents -->
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-feedbacks">No feedbacks as of now</p>
+        {% endif %}
+    </div>
+</body>
+</html>

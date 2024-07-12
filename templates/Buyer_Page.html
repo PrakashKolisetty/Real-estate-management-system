@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .property-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .property-image {
+            width: 100%;
+            border-radius: 0px;
+            margin-bottom: 20px;
+        }
+
+        .property-details {
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.5; /* Add spacing between lines */
+        }
+
+        .property-details strong {
+            display: inline-block; /* Ensure each property name is on a separate line */
+            width: 150px; /* Adjust width to align property names */
+        }
+
+        .agent-details-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .agent-details {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .show-details-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-right: 10px; /* Add margin between buttons */
+        }
+
+        .show-details-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling for modal trigger buttons */
+        .modal-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-button:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 10px;
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Styling for feedback form */
+        .feedback-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none; /* Prevent resizing of textarea */
+        }
+
+        .feedback-form button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .feedback-form button:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Available Properties</h1>
+
+        {% for property in properties %}
+        {% if property.property_status == 'Available' %}
+        <div class="property-card">
+            <img class="property-image" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGhvdXNlfGVufDB8fDB8fHww" alt="Property Image">
+            <div class="property-details">
+                <strong>Property ID:</strong>{{property.property_id}}<br>
+                <strong>Property Type:</strong> {{ property.prop_type }}<br>
+                <strong>Property Price:</strong> {{ property.prop_price }}<br>
+                <strong>House No:</strong> {{ property.house_no }}<br>
+                <strong>Street:</strong> {{ property.street }}<br>
+                <strong>City:</strong> {{ property.city }}<br>
+                <strong>Pincode:</strong> {{ property.pincode }}<br>
+                <strong>State:</strong> {{ property.state_name }}<br>
+                <strong>BHK:</strong> {{ property.bhk }}<br>
+                <strong>Property Status:</strong> {{ property.property_status }}<br>
+            </div>
+            <button class="show-details-button">Show Agent Details</button>
+            <div class="agent-details-container">
+                <div class="agent-details">
+                    <h2>Agent Details</h2>
+                    <p><strong>Name:</strong> {{ property.assigned_agent_name }}</p>
+                    <p><strong>Mobile:</strong> {{ property.phone_no }}</p>
+                </div>
+            </div>
+            <button class="modal-button" onclick="openModal('add-feedback-modal', '{{ property.property_id }}')">Add Feedback</button>
+            <button class="modal-button" onclick="viewFeedbacks('{{ property.property_id }}')">View Feedbacks</button>
+
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div id="add-feedback-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('add-feedback-modal')">&times;</span>
+            <h2>Add Feedback</h2>
+            <form action="/add_feedback" method="post" class="feedback-form">
+                <textarea name="feedback" rows="4" cols="50" placeholder="Enter your feedback here"></textarea><br>
+                <input type="hidden" name="property_id" id="property-id-input">
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="text-center">
+            <form action="/logout" method="post">
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+    </div>
+
+    <script>
+        // JavaScript to toggle agent details visibility
+        const showButtons = document.querySelectorAll('.show-details-button');
+        showButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const detailsContainer = button.nextElementSibling;
+                detailsContainer.style.display = detailsContainer.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+
+        // JavaScript function for modal
+        function openModal(modalId, propertyId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "block";
+            document.getElementById('property-id-input').value = propertyId;
+        }
+
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        function viewFeedbacks(propertyId) {
+            window.location.href = `/show_feedbacks?property_id=${propertyId}`;
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
